@@ -5,11 +5,62 @@ Two calls per top topic:
 2. Opportunity brief (narrative + institutional knowledge injected)
 """
 import os
+import time
 import anthropic
 from loguru import logger
 from dotenv import load_dotenv
 
 load_dotenv()
+
+# run_id context — set by pipeline/run.py before synthesis begins
+_current_run_id: str | None = None
+
+
+def set_run_id(run_id: str | None):
+    global _current_run_id
+    _current_run_id = run_id
+
+
+def _tracked_call(call_type: str, topic: str | None, fn, *args, **kwargs):
+    """Wrap a Claude API call with timing and usage tracking."""
+    start = time.time()
+    try:
+        response = fn(*args, **kwargs)
+        duration_ms = int((time.time() - start) * 1000)
+        usage = getattr(response, "usage", None)
+        input_tokens = getattr(usage, "input_tokens", 0) if usage else 0
+        output_tokens = getattr(usage, "output_tokens", 0) if usage else 0
+        try:
+            from pipeline.telemetry.store import flush_claude_usage
+            flush_claude_usage(
+                run_id=_current_run_id,
+                call_type=call_type,
+                topic=topic,
+                input_tokens=input_tokens,
+                output_tokens=output_tokens,
+                duration_ms=duration_ms,
+                success=True,
+            )
+        except Exception:
+            pass
+        return response
+    except Exception as e:
+        duration_ms = int((time.time() - start) * 1000)
+        try:
+            from pipeline.telemetry.store import flush_claude_usage
+            flush_claude_usage(
+                run_id=_current_run_id,
+                call_type=call_type,
+                topic=topic,
+                input_tokens=0,
+                output_tokens=0,
+                duration_ms=duration_ms,
+                success=False,
+                error_msg=str(e),
+            )
+        except Exception:
+            pass
+        raise
 
 MODEL = "claude-sonnet-4-6"
 _client: anthropic.Anthropic | None = None
@@ -54,7 +105,9 @@ Analyze this topic for market gaps. Be specific and evidence-based. Answer:
 
 Be direct. 3-4 sentences per section. No fluff."""
 
-    response = get_client().messages.create(
+    response = _tracked_call(
+        "gap_analysis", topic,
+        get_client().messages.create,
         model=MODEL,
         max_tokens=800,
         messages=[{"role": "user", "content": prompt}],
@@ -110,7 +163,9 @@ Write a concise opportunity brief with these sections:
 
 Be specific and actionable. Write for a builder who needs to decide in the next 30 seconds whether to dig deeper."""
 
-    response = get_client().messages.create(
+    response = _tracked_call(
+        "opportunity_brief", topic,
+        get_client().messages.create,
         model=MODEL,
         max_tokens=1000,
         messages=[{"role": "user", "content": prompt}],
@@ -159,7 +214,9 @@ Respond in this exact JSON format:
   "reasoning": "..."
 }}"""
 
-    response = get_client().messages.create(
+    response = _tracked_call(
+        "app_fit", topic,
+        get_client().messages.create,
         model=MODEL,
         max_tokens=500,
         messages=[{"role": "user", "content": prompt}],

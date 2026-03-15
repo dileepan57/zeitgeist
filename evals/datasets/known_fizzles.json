@@ -1,0 +1,92 @@
+[
+  {
+    "topic": "NFT social media",
+    "category": "web3_blockchain",
+    "confirmed_fizzled": true,
+    "evidence": "DeSo, Steem, NFT Twitter features all failed; Web3 social adoption never materialized",
+    "peak_signals": ["reddit", "crunchbase", "youtube"],
+    "months_before_decline": 8,
+    "fizzle_reason": "User experience too complex; no compelling reason vs. free web2 alternatives"
+  },
+  {
+    "topic": "metaverse real estate",
+    "category": "web3_blockchain",
+    "confirmed_fizzled": true,
+    "evidence": "Decentraland ghost town, Sandbox declining; Meta lost $40B on metaverse",
+    "peak_signals": ["crunchbase", "markets", "youtube"],
+    "months_before_decline": 12,
+    "fizzle_reason": "No hardware (VR headsets) at scale; no compelling use case beyond speculation"
+  },
+  {
+    "topic": "crypto play-to-earn games",
+    "category": "web3_blockchain",
+    "confirmed_fizzled": true,
+    "evidence": "Axie Infinity collapsed 95%; most P2E games dead; sustainable models not found",
+    "peak_signals": ["reddit", "youtube", "crunchbase"],
+    "months_before_decline": 6,
+    "fizzle_reason": "Ponzi economics; gameplay secondary to token earning; not fun"
+  },
+  {
+    "topic": "supersonic air travel",
+    "category": "travel",
+    "confirmed_fizzled": true,
+    "evidence": "Boom Supersonic delayed repeatedly; Aerion went bankrupt; physics/economics don't work",
+    "peak_signals": ["crunchbase", "sbir", "arxiv"],
+    "months_before_decline": 18,
+    "fizzle_reason": "Unit economics impossible at consumer price points; regulatory/noise barriers"
+  },
+  {
+    "topic": "social audio apps",
+    "category": "media",
+    "confirmed_fizzled": true,
+    "evidence": "Clubhouse 98% decline; Twitter Spaces abandoned; Spotify live audio shutdown",
+    "peak_signals": ["reddit", "crunchbase", "youtube"],
+    "months_before_decline": 10,
+    "fizzle_reason": "Synchronous audio inconvenient; content not discoverable; no retention loop"
+  },
+  {
+    "topic": "autonomous vehicles consumer",
+    "category": "robotics_automation",
+    "confirmed_fizzled": true,
+    "evidence": "Waymo still geo-limited 2025; Tesla FSD not fully autonomous; timeline shifted 15+ years",
+    "peak_signals": ["crunchbase", "youtube", "markets"],
+    "months_before_decline": 24,
+    "fizzle_reason": "Regulatory, liability, and edge-case engineering harder than anticipated"
+  },
+  {
+    "topic": "smart home hubs",
+    "category": "tech_gadgets",
+    "confirmed_fizzled": true,
+    "evidence": "SmartThings declining, Wink shutdown, HomeKit limited; fragmentation killed market",
+    "peak_signals": ["amazon_movers", "producthunt", "reddit"],
+    "months_before_decline": 18,
+    "fizzle_reason": "No interoperability standard; setup too complex for mainstream; Matter arrived late"
+  },
+  {
+    "topic": "daily deal apps",
+    "category": "behavior",
+    "confirmed_fizzled": true,
+    "evidence": "Groupon $15B → $200M; LivingSocial dead; flash sale model collapsed",
+    "peak_signals": ["crunchbase", "app_store", "wikipedia"],
+    "months_before_decline": 18,
+    "fizzle_reason": "Merchant economics terrible; customer retention zero; race to bottom on margins"
+  },
+  {
+    "topic": "QR code payments",
+    "category": "fintech",
+    "confirmed_fizzled": true,
+    "evidence": "Never took off in US despite multiple attempts; NFC (Apple/Google Pay) won instead",
+    "peak_signals": ["producthunt", "crunchbase", "reddit"],
+    "months_before_decline": 12,
+    "fizzle_reason": "UX inferior to tap-to-pay; no incentive for merchant or consumer adoption"
+  },
+  {
+    "topic": "crypto savings accounts",
+    "category": "fintech",
+    "confirmed_fizzled": true,
+    "evidence": "Celsius $4.7B collapse, BlockFi bankrupt, Voyager bankrupt",
+    "peak_signals": ["reddit", "crunchbase", "youtube"],
+    "months_before_decline": 8,
+    "fizzle_reason": "Yield was unsustainable leverage/fraud; regulatory action; 2022 crypto winter"
+  }
+]

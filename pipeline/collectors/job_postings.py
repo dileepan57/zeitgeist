@@ -152,8 +152,8 @@ def collect() -> list[dict]:
     app_id = os.environ.get("ADZUNA_APP_ID")
     app_key = os.environ.get("ADZUNA_APP_KEY")
 
-    if not app_id or not app_key:
-        logger.error("Adzuna: ADZUNA_APP_ID or ADZUNA_APP_KEY not set — skipping")
+    if not app_id or not app_key or app_id.startswith("REPLACE") or app_key.startswith("REPLACE"):
+        logger.warning("Adzuna: credentials not configured, skipping")
         return results
 
     for category in TECH_CATEGORIES:

@@ -100,6 +100,10 @@ def collect() -> list[dict]:
     """
     Returns list of {topic, raw_value, baseline_value, spike_score, signal_source, signal_category}
     """
+    if not os.environ.get("REDDIT_CLIENT_ID") or os.environ.get("REDDIT_CLIENT_ID", "").startswith("REPLACE"):
+        logger.warning("Reddit: no credentials configured, skipping")
+        return []
+
     logger.info("Collecting Reddit signals...")
     results = []
 

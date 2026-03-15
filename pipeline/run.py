@@ -11,9 +11,11 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from pipeline.utils import db
+from pipeline.utils.db import get_client
 from pipeline.scoring import engine as scoring_engine
 from pipeline.synthesis import claude as synthesis
 from pipeline.reflection.knowledge import get_latest_knowledge
+from pipeline.telemetry.store import flush_collector_run
 
 # Phase 1 collectors (core)
 from pipeline.collectors import wikipedia, reddit, google_trends, gdelt, github_trending
@@ -114,13 +116,17 @@ def run(run_date: date | None = None, dry_run: bool = False):
     today = run_date or date.today()
     logger.info(f"=== Zeitgeist Pipeline Starting: {today} ===")
 
-    # Create daily run record
-    run_record = db.insert("daily_runs", {
-        "run_date": today.isoformat(),
-        "status": "running",
-    })
-    run_id = run_record[0]["id"]
-    logger.info(f"Run ID: {run_id}")
+    # Create daily run record (skip in dry-run; upsert to handle re-runs on same day)
+    if dry_run:
+        run_id = "dry-run"
+        logger.info("Run ID: dry-run (no DB write)")
+    else:
+        run_record = get_client().table("daily_runs").upsert(
+            {"run_date": today.isoformat(), "status": "running"},
+            on_conflict="run_date",
+        ).execute()
+        run_id = run_record.data[0]["id"]
+        logger.info(f"Run ID: {run_id}")
 
     try:
         # ── Step 1: Collect ─────────────────────────────
@@ -128,19 +134,39 @@ def run(run_date: date | None = None, dry_run: bool = False):
         all_collectors = CORE_COLLECTORS + PHASE2_COLLECTORS
 
         for collector in all_collectors:
-            logger.info(f"Running collector: {collector.__name__.split('.')[-1]}")
+            import time as _time
+            collector_name = collector.__name__.split(".")[-1]
+            logger.info(f"Running collector: {collector_name}")
+            _start = _time.time()
+            _status = "success"
+            _error = None
             try:
                 signals = collector.collect()
+                if not signals:
+                    _status = "blocked"
                 all_signals.extend(signals)
                 logger.info(f"  → {len(signals)} signals")
             except Exception as e:
-                logger.error(f"Collector {collector.__name__} failed: {e}")
+                _status = "error"
+                _error = f"{type(e).__name__}: {e}"
+                signals = []
+                logger.error(f"Collector {collector_name} failed: {e}")
+            finally:
+                flush_collector_run(
+                    run_id=run_id,
+                    collector_name=collector_name,
+                    status=_status,
+                    items_collected=len(signals) if signals else 0,
+                    duration_ms=int((_time.time() - _start) * 1000),
+                    error_msg=_error,
+                )
 
         logger.info(f"Total raw signals collected: {len(all_signals)}")
 
         if not all_signals:
             logger.error("No signals collected — aborting")
-            db.update("daily_runs", {"id": run_id}, {"status": "failed"})
+            if not dry_run:
+                db.update("daily_runs", {"id": run_id}, {"status": "failed"})
             return
 
         # ── Step 2: Score ────────────────────────────────
@@ -153,6 +179,7 @@ def run(run_date: date | None = None, dry_run: bool = False):
             _store_results(run_id, scored_topics)
 
         # ── Step 4: Synthesize top topics ───────────────
+        synthesis.set_run_id(run_id)
         institutional_knowledge = get_latest_knowledge()
         user_thesis = _get_user_thesis()
 
@@ -189,7 +216,8 @@ def run(run_date: date | None = None, dry_run: bool = False):
 
     except Exception as e:
         logger.error(f"Pipeline failed: {e}")
-        db.update("daily_runs", {"id": run_id}, {"status": "failed"})
+        if not dry_run:
+            db.update("daily_runs", {"id": run_id}, {"status": "failed"})
         raise
 
 

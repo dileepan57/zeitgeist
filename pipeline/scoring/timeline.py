@@ -10,24 +10,34 @@ LEAD_ORDER = ["builder", "community", "money", "behavior", "demand", "media"]
 # Timeline position rules (evaluated in order, first match wins)
 # Each rule specifies: required categories present, required categories absent
 TIMELINE_RULES = [
+    # PEAKING first — most specific, requires all 5 categories
+    {
+        "position": "PEAKING",
+        "required_present": ["builder", "community", "behavior", "demand", "media"],
+        "required_absent": [],
+        "description": "All signals firing — at or near peak",
+    },
+    # EMERGING: builder signals only, no community/demand/media yet
     {
         "position": "EMERGING",
         "required_present": ["builder"],
-        "required_absent": ["media", "demand"],
+        "required_absent": ["media", "demand", "community"],
         "description": "Builder signals only — too early for mainstream",
     },
+    # CRYSTALLIZING: community forming, no mainstream signals yet
     {
         "position": "CRYSTALLIZING",
         "required_present": ["builder", "community"],
-        "required_absent": ["media"],
+        "required_absent": ["media", "demand"],
         "description": "Community forming around builder activity — sweet spot",
     },
     {
         "position": "CRYSTALLIZING",
         "required_present": ["community", "behavior"],
-        "required_absent": ["media"],
+        "required_absent": ["media", "demand"],
         "description": "User behavior + community without media — pre-mainstream",
     },
+    # MAINSTREAM: demand signals firing (with or without media)
     {
         "position": "MAINSTREAM",
         "required_present": ["demand", "media"],
@@ -39,12 +49,6 @@ TIMELINE_RULES = [
         "required_present": ["demand", "community", "behavior"],
         "required_absent": [],
         "description": "Multi-channel mainstream without media dependence",
-    },
-    {
-        "position": "PEAKING",
-        "required_present": ["builder", "community", "behavior", "demand", "media"],
-        "required_absent": [],
-        "description": "All signals firing — at or near peak",
     },
 ]
 

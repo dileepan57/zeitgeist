@@ -3,6 +3,7 @@ Baseline-relative scoring.
 Computes spike scores relative to 90-day rolling averages.
 Suppresses evergreen topics unless they show exceptional spikes.
 """
+import re
 from loguru import logger
 
 # Topics that are always high-volume — suppress unless extraordinary spike
@@ -23,7 +24,12 @@ def compute_baseline_score(topic: str, signals: list[dict]) -> dict:
     Returns {baseline_score, spike_scores_by_source, is_evergreen, suppressed}
     """
     topic_lower = topic.lower()
-    is_evergreen = any(ev in topic_lower for ev in EVERGREEN_TOPICS)
+    # Word-boundary match: avoid "ai" matching "ai_sleep_coach" as a substring
+    topic_words = set(re.split(r"[\s_\-/]+", topic_lower))
+    is_evergreen = any(
+        ev in topic_words or topic_lower == ev or topic_lower.startswith(ev + " ")
+        for ev in EVERGREEN_TOPICS
+    )
     threshold = EVERGREEN_SPIKE_THRESHOLD if is_evergreen else STANDARD_SPIKE_THRESHOLD
 
     spike_scores = []

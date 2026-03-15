@@ -1,0 +1,152 @@
+[
+  {
+    "topic": "AI coding assistants",
+    "category": "tech_gadgets",
+    "confirmed_real": true,
+    "evidence": "GitHub Copilot $100M ARR by 2023, Cursor raised $60M, multiple successful products",
+    "lead_signals": ["github_trending", "stackoverflow", "arxiv"],
+    "timeline_position_at_opportunity": "CRYSTALLIZING",
+    "months_from_signal_to_mainstream": 12,
+    "gap_description": "Developers needed autocomplete beyond snippets; existing IDEs were generic"
+  },
+  {
+    "topic": "longevity supplements",
+    "category": "fitness_wellness",
+    "confirmed_real": true,
+    "evidence": "Bryan Johnson Blueprint, Athletic Greens, Momentous all growing fast; NMN/NR market $500M+",
+    "lead_signals": ["reddit", "substack", "arxiv", "youtube"],
+    "timeline_position_at_opportunity": "CRYSTALLIZING",
+    "months_from_signal_to_mainstream": 18,
+    "gap_description": "Longevity science going mainstream but no easy-to-follow supplement protocol app"
+  },
+  {
+    "topic": "AI note-taking",
+    "category": "tech_gadgets",
+    "confirmed_real": true,
+    "evidence": "Notion AI, Obsidian AI plugins, Mem.ai $23.5M, Reflect, multiple exits",
+    "lead_signals": ["reddit", "producthunt", "github_trending"],
+    "timeline_position_at_opportunity": "CRYSTALLIZING",
+    "months_from_signal_to_mainstream": 9,
+    "gap_description": "Knowledge workers drowning in notes with no semantic retrieval"
+  },
+  {
+    "topic": "pilates apps",
+    "category": "fitness_wellness",
+    "confirmed_real": true,
+    "evidence": "ClassPass, Peloton Pilates, multiple pilates-specific apps; 'Pilates body' search surge 2023",
+    "lead_signals": ["reddit", "youtube", "app_store"],
+    "timeline_position_at_opportunity": "CRYSTALLIZING",
+    "months_from_signal_to_mainstream": 12,
+    "gap_description": "High demand for at-home pilates guidance; existing apps too generic or expensive"
+  },
+  {
+    "topic": "sourdough tools",
+    "category": "food_beverage",
+    "confirmed_real": true,
+    "evidence": "Breadtopia, The Perfect Loaf, multiple sourdough apps in App Store",
+    "lead_signals": ["reddit", "youtube", "wikipedia"],
+    "timeline_position_at_opportunity": "MAINSTREAM",
+    "months_from_signal_to_mainstream": 6,
+    "gap_description": "Home bakers lacked timer + hydration calculator tools in one place"
+  },
+  {
+    "topic": "AI therapy chatbots",
+    "category": "fitness_wellness",
+    "confirmed_real": true,
+    "evidence": "Woebot $90M, Replika, Wysa; FDA cleared several AI mental health tools",
+    "lead_signals": ["reddit", "arxiv", "job_postings"],
+    "timeline_position_at_opportunity": "CRYSTALLIZING",
+    "months_from_signal_to_mainstream": 18,
+    "gap_description": "Mental health support inaccessible/expensive; waitlists for therapists 3-6 months"
+  },
+  {
+    "topic": "personal finance AI",
+    "category": "fintech",
+    "confirmed_real": true,
+    "evidence": "Cleo $80M ARR, Monarch Money, YNAB growth; multiple AI finance startups funded",
+    "lead_signals": ["reddit", "producthunt", "crunchbase"],
+    "timeline_position_at_opportunity": "CRYSTALLIZING",
+    "months_from_signal_to_mainstream": 12,
+    "gap_description": "Mint shutdown left millions without budgeting; no AI-native replacement"
+  },
+  {
+    "topic": "gut microbiome testing",
+    "category": "fitness_wellness",
+    "confirmed_real": true,
+    "evidence": "Viome $87M, Zoe $53M, Seed supplements; biome testing becoming mainstream",
+    "lead_signals": ["arxiv", "sbir", "reddit"],
+    "timeline_position_at_opportunity": "EMERGING",
+    "months_from_signal_to_mainstream": 24,
+    "gap_description": "Research proven gut-brain connection but no consumer-friendly monitoring"
+  },
+  {
+    "topic": "sleep tracking optimization",
+    "category": "fitness_wellness",
+    "confirmed_real": true,
+    "evidence": "Oura Ring $2.5B valuation, Whoop $3.6B, Apple Sleep focus; sleep apps top health charts",
+    "lead_signals": ["reddit", "youtube", "app_store", "markets"],
+    "timeline_position_at_opportunity": "MAINSTREAM",
+    "months_from_signal_to_mainstream": 8,
+    "gap_description": "Wearables collecting sleep data but no personalized action recommendations"
+  },
+  {
+    "topic": "remote team culture tools",
+    "category": "developer_tools",
+    "confirmed_real": true,
+    "evidence": "Donut $12M, Bonusly $74M, multiple culture platforms; post-COVID remote work permanent",
+    "lead_signals": ["reddit", "job_postings", "producthunt"],
+    "timeline_position_at_opportunity": "CRYSTALLIZING",
+    "months_from_signal_to_mainstream": 10,
+    "gap_description": "Remote teams losing spontaneous culture; existing tools too structured"
+  },
+  {
+    "topic": "AI video editing",
+    "category": "tech_gadgets",
+    "confirmed_real": true,
+    "evidence": "Descript $50M, Runway $237M, CapCut 1B+ downloads; AI editing tools exploding",
+    "lead_signals": ["youtube", "github_trending", "producthunt"],
+    "timeline_position_at_opportunity": "CRYSTALLIZING",
+    "months_from_signal_to_mainstream": 12,
+    "gap_description": "Video creation exploding but editing requires professional skill"
+  },
+  {
+    "topic": "EV charging anxiety tools",
+    "category": "climate_tech",
+    "confirmed_real": true,
+    "evidence": "PlugShare $M, ChargePoint market cap; multiple EV trip planning apps funded",
+    "lead_signals": ["reddit", "app_store", "markets"],
+    "timeline_position_at_opportunity": "MAINSTREAM",
+    "months_from_signal_to_mainstream": 6,
+    "gap_description": "EV adopters lacked reliable charging network visibility for long trips"
+  },
+  {
+    "topic": "fertility tracking apps",
+    "category": "fitness_wellness",
+    "confirmed_real": true,
+    "evidence": "Natural Cycles FDA approved, Ovia Health $48M, Clue growth; fertility app market $2B+",
+    "lead_signals": ["reddit", "app_store", "youtube"],
+    "timeline_position_at_opportunity": "CRYSTALLIZING",
+    "months_from_signal_to_mainstream": 15,
+    "gap_description": "Women lacked non-hormonal birth control alternatives; post-Roe demand surge"
+  },
+  {
+    "topic": "AI reading assistants",
+    "category": "tech_gadgets",
+    "confirmed_real": true,
+    "evidence": "Readwise $M, Recall, multiple summarization tools; professionals buried in reading",
+    "lead_signals": ["reddit", "producthunt", "stackoverflow"],
+    "timeline_position_at_opportunity": "EMERGING",
+    "months_from_signal_to_mainstream": 14,
+    "gap_description": "Knowledge workers reading 50+ articles/week; no intelligent curation layer"
+  },
+  {
+    "topic": "niche creator monetization",
+    "category": "creator_economy",
+    "confirmed_real": true,
+    "evidence": "Substack $65M, Patreon $4B, Gumroad; creator economy monetization tools exploding",
+    "lead_signals": ["reddit", "substack", "youtube"],
+    "timeline_position_at_opportunity": "CRYSTALLIZING",
+    "months_from_signal_to_mainstream": 12,
+    "gap_description": "Platform creators unable to own audience or diversify revenue"
+  }
+]

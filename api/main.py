@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-from api.routers import runs, topics, opportunities, reflection, thesis, apps, session
+from api.routers import runs, topics, opportunities, reflection, thesis, apps, session, telemetry, evals, simulator
 
 app = FastAPI(title="Zeitgeist API", version="1.0.0")
 
@@ -23,6 +23,9 @@ app.include_router(reflection.router, prefix="/api/reflection", tags=["reflectio
 app.include_router(thesis.router, prefix="/api/thesis", tags=["thesis"])
 app.include_router(apps.router, prefix="/api/apps", tags=["apps"])
 app.include_router(session.router, prefix="/api/session", tags=["session"])
+app.include_router(telemetry.router, prefix="/api/telemetry", tags=["telemetry"])
+app.include_router(evals.router, prefix="/api/evals", tags=["evals"])
+app.include_router(simulator.router, prefix="/api/simulator", tags=["simulator"])
 
 
 @app.get("/")

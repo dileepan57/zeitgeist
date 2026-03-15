@@ -6,6 +6,8 @@ const links = [
   { href: "/builds", label: "Builds" },
   { href: "/session", label: "Daily Session" },
   { href: "/crystal-ball", label: "Crystal Ball" },
+  { href: "/evals", label: "Evals" },
+  { href: "/telemetry", label: "Telemetry" },
   { href: "/settings", label: "Settings" },
 ];
 

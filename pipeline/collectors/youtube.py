@@ -107,8 +107,8 @@ def collect() -> list[dict]:
     results = []
 
     api_key = os.environ.get("YOUTUBE_API_KEY")
-    if not api_key:
-        logger.error("YouTube: YOUTUBE_API_KEY not set — skipping")
+    if not api_key or api_key.startswith("REPLACE"):
+        logger.warning("YouTube: YOUTUBE_API_KEY not configured, skipping")
         return results
 
     # topic -> {region: score}

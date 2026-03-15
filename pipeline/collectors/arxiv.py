@@ -18,7 +18,7 @@ from pipeline.utils.rate_limiter import retry_with_backoff, rate_limited
 
 load_dotenv()
 
-ARXIV_API = "http://export.arxiv.org/api/query"
+ARXIV_API = "https://export.arxiv.org/api/query"
 SEMANTIC_SCHOLAR_API = "https://api.semanticscholar.org/graph/v1/paper/search"
 
 # ArXiv category codes to monitor
@@ -194,11 +194,15 @@ def collect() -> list[dict]:
     category_signals = []
     for category in ARXIV_CATEGORIES:
         try:
-            # Fetch recent papers (14 days)
+            # Fetch recent papers (14 days) — for titles/keywords
             recent_papers = _fetch_arxiv_category(category, days=14)
-            recent_count = len(recent_papers)
 
             time.sleep(3)  # ArXiv is sensitive to rapid requests
+
+            # Use true count (not capped by max_results) for spike calculation
+            recent_count = _fetch_arxiv_baseline(category, days=14)
+
+            time.sleep(3)
 
             # Estimate baseline (90 days -> divide by (90/14) to get per-14-day equivalent)
             baseline_90d = _fetch_arxiv_baseline(category, days=90)

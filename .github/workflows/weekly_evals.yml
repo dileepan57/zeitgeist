@@ -1,0 +1,57 @@
+name: Weekly Evals
+
+on:
+  # Run every Sunday at 8 AM UTC (after weekly_reflection which runs at 7 AM)
+  schedule:
+    - cron: '0 8 * * 0'
+  # Allow manual trigger
+  workflow_dispatch:
+    inputs:
+      include_claude:
+        description: 'Include Claude-dependent evals (costs ~$0.10)'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'true'
+          - 'false'
+
+jobs:
+  run-evals:
+    name: Run Evals Suite
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run evals (no Claude by default on schedule)
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          INCLUDE_CLAUDE="${{ github.event.inputs.include_claude || 'false' }}"
+          if [ "$INCLUDE_CLAUDE" = "true" ]; then
+            python -m evals.runner
+          else
+            python -m evals.runner --no-claude
+          fi
+
+      - name: Upload eval log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-results-${{ github.run_id }}
+          path: |
+            *.log
+          retention-days: 30
