@@ -14,6 +14,7 @@ app.add_middleware(
         "http://localhost:3000",
         "https://zeitgeist.vercel.app",
         "https://zeitgeist-web.vercel.app",
+        "https://zeitgeist-qeyd.onrender.com",
     ],
     allow_origin_regex=r"https://zeitgeist.*\.vercel\.app",
     allow_credentials=True,
