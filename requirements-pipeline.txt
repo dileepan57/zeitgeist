@@ -1,0 +1,6 @@
+# Full pipeline deps — includes heavy ML packages not needed by the API
+-r requirements.txt
+
+# NLP / semantic entity merging (only needed when ZEITGEIST_SEMANTIC_MERGE=1)
+sentence-transformers==3.0.1
+scikit-learn==1.4.2

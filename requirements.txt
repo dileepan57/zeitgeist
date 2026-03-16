@@ -13,10 +13,6 @@ feedparser==6.0.11
 beautifulsoup4==4.12.3
 lxml==5.2.1
 
-# NLP / embeddings
-sentence-transformers==3.0.1
-scikit-learn==1.4.2
-numpy==1.26.4
 
 # Scheduling / pipeline
 schedule==1.2.2
