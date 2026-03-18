@@ -55,7 +55,6 @@ def _fetch_questions(site: str, from_date: int, min_votes: int = MIN_VOTES, page
         "min": min_votes,
         "sort": "votes",
         "order": "desc",
-        "filter": "!T1gn.fZ3DaFfEDIBNJ",  # includes tags, score, answer_count, view_count
         "pagesize": 100,
         "page": page,
     }

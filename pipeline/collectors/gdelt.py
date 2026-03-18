@@ -104,7 +104,10 @@ def collect() -> list[dict]:
 
     try:
         # Fetch last 24h vs last 7d to compute spike
+        # Sleep between calls to avoid GDELT rate limiting
+        import time
         recent_articles = _fetch_top_coverage(timespan="24h", max_records=250)
+        time.sleep(15)
         baseline_articles = _fetch_top_coverage(timespan="7d", max_records=250)
     except Exception as e:
         logger.error(f"GDELT fetch failed: {e}")
