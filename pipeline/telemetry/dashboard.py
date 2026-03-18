@@ -174,7 +174,7 @@ def get_scoring_metrics(limit: int = 30) -> dict:
 
         rows = (
             client.table("topic_scores")
-            .select("opportunity_score, independence_score, actionability_score, timeline_position")
+            .select("opportunity_score, independence_score, timeline_position")
             .order("created_at", desc=True)
             .limit(500)
             .execute()
