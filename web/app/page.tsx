@@ -1,5 +1,7 @@
 import { OpportunityCard } from "@/components/OpportunityCard";
 
+export const dynamic = "force-dynamic";
+
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
 async function getOpportunities() {
