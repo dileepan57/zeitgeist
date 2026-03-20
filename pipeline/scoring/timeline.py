@@ -90,10 +90,26 @@ def classify_timeline(
     if not categories:
         return {"position": "NONE", "description": "No signals", "lead_indicator_ratio": 0.0}
 
-    if "media" in categories and len(categories) == 1:
+    # Single-category fallbacks
+    if len(categories) == 1:
+        if "media" in categories:
+            return {"position": "MAINSTREAM", "description": "Media-driven only", "lead_indicator_ratio": 0.0}
+        if "demand" in categories:
+            # Search/Wikipedia spike with no builder or community signal = already mainstream
+            return {"position": "MAINSTREAM", "description": "Demand-driven only — no early signals", "lead_indicator_ratio": 0.0}
+        if "builder" in categories:
+            return {"position": "EMERGING", "description": "Builder signal only", "lead_indicator_ratio": 1.0}
+        if "community" in categories:
+            return {"position": "CRYSTALLIZING", "description": "Community only — watch for builder signals", "lead_indicator_ratio": 0.5}
+
+    # Demand + media only (no builder or community) → already mainstream, not crystallizing
+    if categories == {"demand", "media"} or (
+        "demand" in categories and "media" in categories
+        and not {"builder", "community"}.intersection(categories)
+    ):
         return {
             "position": "MAINSTREAM",
-            "description": "Media-driven only",
+            "description": "Demand + media only — no early signals",
             "lead_indicator_ratio": 0.0,
         }
 

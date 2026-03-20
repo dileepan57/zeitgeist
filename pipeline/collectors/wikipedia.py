@@ -16,6 +16,58 @@ TOP_ARTICLES_URL = f"{WIKIMEDIA_BASE}/metrics/pageviews/top/en.wikipedia/all-acc
 ARTICLE_VIEWS_URL = f"{WIKIMEDIA_BASE}/metrics/pageviews/per-article/en.wikipedia/all-access/all-agents/{{article}}/daily/{{start}}/{{end}}"
 
 
+# Parenthetical disambiguators that mark entertainment/sports content
+ENTERTAINMENT_DISAMBIGUATORS = {
+    "(film)", "(TV series)", "(TV show)", "(miniseries)", "(documentary)",
+    "(season 1)", "(season 2)", "(season 3)", "(season 4)", "(season 5)",
+    "(song)", "(album)", "(EP)", "(single)", "(soundtrack)",
+    "(video game)", "(game)", "(band)", "(musician)", "(singer)",
+    "(actor)", "(actress)", "(wrestler)", "(boxer)",
+}
+
+# Article name prefixes that are never actionable opportunities
+SKIP_PREFIXES = (
+    "Special:", "Wikipedia:", "File:", "Template:", "Help:", "Portal:", "Talk:", "User:",
+    "List of", "Deaths in", "Lists of",
+)
+
+# Suffixes/patterns that indicate entertainment-only articles
+SKIP_SUFFIXES = ("filmography", "discography", "bibliography")
+
+# High-signal entertainment event names (exact or partial matches)
+SKIP_ENTERTAINMENT_EVENTS = {
+    "Academy Awards", "Grammy Awards", "Emmy Awards", "Tony Awards",
+    "Golden Globe", "BAFTA", "Oscars", "Super Bowl", "World Series",
+    "NBA Finals", "Stanley Cup", "FIFA World Cup", "UEFA Champions League",
+    "Billboard", "MTV Video Music Awards", "American Music Awards",
+}
+
+
+def _is_entertainment_article(article: str) -> bool:
+    """Return True if the article is clearly an entertainment/sports topic."""
+    name = article.replace("_", " ")
+
+    # Meta page prefixes
+    if any(name.startswith(p) for p in SKIP_PREFIXES):
+        return True
+
+    # Parenthetical disambiguators
+    name_lower = name.lower()
+    for disambig in ENTERTAINMENT_DISAMBIGUATORS:
+        if disambig in name_lower:
+            return True
+
+    # Trailing entertainment suffixes
+    if any(name_lower.endswith(s) for s in SKIP_SUFFIXES):
+        return True
+
+    # Known entertainment event names
+    if any(event.lower() in name_lower for event in SKIP_ENTERTAINMENT_EVENTS):
+        return True
+
+    return False
+
+
 @retry_with_backoff(max_retries=3)
 def get_top_articles(target_date: date | None = None) -> list[dict]:
     """Fetch top 1000 Wikipedia articles for a given date."""
@@ -24,9 +76,7 @@ def get_top_articles(target_date: date | None = None) -> list[dict]:
     response = httpx.get(url, headers=HEADERS, timeout=30)
     response.raise_for_status()
     articles = response.json()["items"][0]["articles"]
-    # Filter out meta pages
-    skip_prefixes = ("Special:", "Wikipedia:", "File:", "Template:", "Help:", "Portal:", "Talk:", "User:")
-    return [a for a in articles if not any(a["article"].startswith(p) for p in skip_prefixes)]
+    return [a for a in articles if not _is_entertainment_article(a["article"])]
 
 
 @retry_with_backoff(max_retries=3)
