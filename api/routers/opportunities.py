@@ -27,24 +27,20 @@ def get_opportunities(
     run_date = runs[0].get("run_date", date)
 
     # Get scores for this run
-    query = client.table("topic_scores").select(
-        "*, topics(name, canonical_name, first_seen)"
-    ).eq("run_id", run_id).gte("opportunity_score", min_score).order("opportunity_score", desc=True).limit(limit)
+    query = (
+        client.table("topic_scores")
+        .select("*, topics(name, canonical_name, first_seen)")
+        .eq("run_id", run_id)
+        .gte("opportunity_score", min_score)
+        .order("independence_score", desc=True)
+        .order("opportunity_score", desc=True)
+        .limit(limit)
+    )
 
     if timeline:
         query = query.eq("timeline_position", timeline)
 
     scores = query.execute().data
-
-    # Fetch syntheses separately and merge by topic_id (no direct FK to join on)
-    if scores:
-        topic_ids = [s["topic_id"] for s in scores]
-        syntheses = client.table("topic_syntheses").select(
-            "topic_id, gap_analysis, opportunity_brief, app_fit_score, app_concept"
-        ).eq("run_id", run_id).in_("topic_id", topic_ids).execute().data
-        syntheses_map = {s["topic_id"]: s for s in syntheses}
-        for score in scores:
-            score["topic_syntheses"] = syntheses_map.get(score["topic_id"])
 
     return {
         "run_date": run_date,
